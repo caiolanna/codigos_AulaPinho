@@ -14,24 +14,36 @@ Node* createNode(int);
 void insertFront(Node**, int);
 void insertEnd(Node**, int);
 void insertAfter(Node**, int);
-void insertBefore(Node*, int);
+void insertBefore(Node**, int);
 void deleteNote(Node**, Node*);
 void displayList(Node*);
 
 int main()
 {
     Node* head = nullptr;
+
     displayList(head);
+
     cout << "================================================" << endl;
+
     insertEnd(&head, 0);
     insertEnd(&head, 1);
     insertEnd(&head, 3);
     insertEnd(&head, 7);
     insertEnd(&head, 10);
     insertEnd(&head, 13);
+
     displayList(head);
+
     cout << "================================================" << endl;
-    insertBefore(head, 20);
+
+    insertBefore(&head, 20);
+
+    displayList(head);
+
+    cout << "================================================" << endl;
+
+    insertBefore(&(head -> ptrNext -> ptrNext), 50);
 
     displayList(head);
 
@@ -54,13 +66,13 @@ void displayList(Node* node)
 {
     if (node == nullptr)
     {
-        cout << "Lista Vazia: Não é possivel realizar displayList" << endl;
+        cout << "Lista Vazia: Nï¿½o ï¿½ possivel realizar displayList" << endl;
         return;
     }
 
     if (node->ptrPrev != nullptr)
     {
-        cout << "Meio ou Fim da Lista: Não é possivel realizar displayList" << endl;
+        cout << "Meio ou Fim da Lista: Nï¿½o ï¿½ possivel realizar displayList" << endl;
     }
 
     Node* temp = node;
@@ -118,68 +130,69 @@ void insertAfter(Node* ptrLocation, int iPayload)
 {
     if (ptrLocation == nullptr)
     {
-        cout << "Location é NULL" << endl;
+        cout << "Location ï¿½ NULL" << endl;
         return;
     }
 
     Node* newNode = createNode(iPayload);
 
-    // CORRIGIR NÓ A SER INSERITO
+    // CORRIGIR Nï¿½ A SER INSERITO
     newNode->ptrNext = ptrLocation->ptrNext;
     newNode->ptrPrev = ptrLocation;
 
-    // CORRIGIR PONTO DE INSERÇÃO
+    // CORRIGIR PONTO DE INSERï¿½ï¿½O
     ptrLocation->ptrNext = newNode;
 
     if(newNode->ptrNext != nullptr) newNode->ptrNext->ptrPrev = newNode;
 }
 
-void insertBefore(Node* ptrLocation, int iPayload)
+void insertBefore(Node** ptrLocation, int iPayload)
 {
-
-    cout << ptrLocation << endl;
-
-    if (ptrLocation == nullptr)
+    if (ptrLocation == nullptr || *ptrLocation == nullptr)
     {
-        cout << "Location é NULL" << endl;
+        cout << "Location Ã© NULL" << endl;
         return;
     }
 
     Node* newNode = createNode(iPayload);
-    newNode->ptrNext = ptrLocation;
-    newNode->ptrPrev = ptrLocation->ptrPrev;
-    ptrLocation->ptrPrev = newNode;
-    if(ptrLocation->ptrPrev != nullptr)
-    {
-        ptrLocation->ptrPrev->ptrNext = newNode;
-    }else
-    {
-        ptrLocation = newNode;
-    }
 
+    newNode -> ptrNext = (*ptrLocation);
+
+    newNode -> ptrPrev = (*ptrLocation) -> ptrPrev;
+
+    if((*ptrLocation)->ptrPrev != nullptr)
+    {
+        (*ptrLocation)->ptrPrev->ptrNext = newNode;
+        (*ptrLocation)-> ptrPrev = newNode;
+    }
+    else
+    {   
+        (*ptrLocation)-> ptrPrev = newNode;
+        *ptrLocation = newNode;
+    }
 }
 
 void deleteNote(Node** head, Node* ptrDelete)
 {
     if (*head == nullptr || ptrDelete == nullptr)
     {
-        cout << "Não foi possível remover." << endl;
+        cout << "Nï¿½o foi possï¿½vel remover." << endl;
         return;
     }
 
     //CASO ptrDelete SEJA O PRIMEIRO ELEMENTO DA LISTA.
     if (*head == ptrDelete) (*head) = ptrDelete->ptrNext;
 
-    //CASO ptrDelete NÃO SEJA O ÚLTIMO NÓ.
+    //CASO ptrDelete Nï¿½O SEJA O ï¿½LTIMO Nï¿½.
     if (ptrDelete->ptrNext != nullptr) ptrDelete->ptrNext->ptrPrev = ptrDelete->ptrPrev;
 
-    //CASO ptrDelete NÃO SEJA O PRIMEIRO NÓ.
+    //CASO ptrDelete Nï¿½O SEJA O PRIMEIRO Nï¿½.
     if (ptrDelete->ptrPrev != nullptr) ptrDelete->ptrPrev->ptrNext = ptrDelete->ptrNext;
 
 
     free(ptrDelete);
 }
 
-//EXERCÍCIO 1. Elabore a função void insertBefore(Node*, int);
-//EXERCÍCIO 2. Elabore a função void deleteNodebyValue(Node**, int);
-//EXERCÍCIO 3. Elabore a função Node* searchNodebyValue(Node**, int);
+//EXERCï¿½CIO 1. Elabore a funï¿½ï¿½o void insertBefore(Node*, int);
+//EXERCï¿½CIO 2. Elabore a funï¿½ï¿½o void deleteNodebyValue(Node**, int);
+//EXERCï¿½CIO 3. Elabore a funï¿½ï¿½o Node* searchNodebyValue(Node**, int);
