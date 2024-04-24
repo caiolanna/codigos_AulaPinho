@@ -16,6 +16,7 @@ void insertEnd(Node**, int);
 void insertAfter(Node**, int);
 void insertBefore(Node**, int);
 void deleteNote(Node**, Node*);
+void deleteNodebyValue(Node**, int);
 void displayList(Node*);
 Node* searchNodebyValue(Node**, int);
 
@@ -38,11 +39,15 @@ int main()
 
     cout << "================================================" << endl;
 
+    cout << "Inserindo o elemento 20 antes do primeiro" << endl;
+
     insertBefore(&head, 20);
 
     displayList(head);
 
     cout << "================================================" << endl;
+
+    cout << "Inserindo o elemento 50 antes do terceiro elemento" << endl;
 
     insertBefore(&(head -> ptrNext -> ptrNext), 50);
 
@@ -50,13 +55,42 @@ int main()
 
     cout << "================================================" << endl;
 
+    cout << "Procurando o elemento 3" << endl;
+
     Node* ptrEscolhido = searchNodebyValue(&head, 3);
 
     cout << "O elemento escolhido é: " << ptrEscolhido -> iPayload << endl;
 
     cout << "================================================" << endl;
 
+    cout << "Procurando o elemento 12 (inexistente)" << endl;
+
     ptrEscolhido = searchNodebyValue(&head, 12);
+
+    cout << "================================================" << endl;
+
+    cout << "Removendo o elemento 20" << endl;
+
+    deleteNodebyValue(&head, 20);
+
+    displayList(head);
+
+    cout << "================================================" << endl;
+
+    cout << "Removendo o elemento 13" << endl;
+
+    deleteNodebyValue(&head, 13);
+
+    displayList(head);
+
+    cout << "================================================" << endl;
+
+    cout << "Removendo o elemento 1" << endl;
+
+    deleteNodebyValue(&head, 1);
+
+    displayList(head);
+
 
 
     return 0;
@@ -77,13 +111,13 @@ void displayList(Node* node)
 {
     if (node == nullptr)
     {
-        cout << "Lista Vazia: N�o � possivel realizar displayList" << endl;
+        cout << "displayList: lista vazia" << endl;
         return;
     }
 
     if (node->ptrPrev != nullptr)
     {
-        cout << "Meio ou Fim da Lista: N�o � possivel realizar displayList" << endl;
+        cout << "displayList: node esta no meio ou no fim da lista." << endl;
     }
 
     Node* temp = node;
@@ -141,7 +175,7 @@ void insertAfter(Node* ptrLocation, int iPayload)
 {
     if (ptrLocation == nullptr)
     {
-        cout << "Location � NULL" << endl;
+        cout << "insertAfter: localizacao nula" << endl;
         return;
     }
 
@@ -161,7 +195,7 @@ void insertBefore(Node** ptrLocation, int iPayload)
 {
     if (ptrLocation == nullptr || *ptrLocation == nullptr)
     {
-        cout << "Location é NULL" << endl;
+        cout << "insertBefore: localizacao nula" << endl;
         return;
     }
 
@@ -187,7 +221,7 @@ void deleteNote(Node** head, Node* ptrDelete)
 {
     if (*head == nullptr || ptrDelete == nullptr)
     {
-        cout << "N�o foi poss�vel remover." << endl;
+        cout << "deleteNote: nao foi possivel remover" << endl;
         return;
     }
 
@@ -200,7 +234,6 @@ void deleteNote(Node** head, Node* ptrDelete)
     //CASO ptrDelete N�O SEJA O PRIMEIRO N�.
     if (ptrDelete->ptrPrev != nullptr) ptrDelete->ptrPrev->ptrNext = ptrDelete->ptrNext;
 
-
     free(ptrDelete);
 }
 
@@ -208,7 +241,7 @@ Node* searchNodebyValue(Node** head, int iPayLoad){
 
     if (*head == nullptr)
     {
-        cout << "searchNodebyValue: Lista vazia" << endl;
+        cout << "searchNodebyValue: lista vazia" << endl;
         return nullptr;
     }
 
@@ -223,9 +256,18 @@ Node* searchNodebyValue(Node** head, int iPayLoad){
         current = current->ptrNext;
     }
 
-    cout << "searchNodebyValue: Elemento não encontrado" << endl;
+    cout << "searchNodebyValue: elemento nao encontrado" << endl;
 
     return nullptr;
+}
+
+void deleteNodebyValue(Node** head, int iPayLoad)
+{
+    Node* ptrDeletar = searchNodebyValue(head, iPayLoad);
+
+    deleteNote(head, ptrDeletar);
+
+    return;
 }
 
 //EXERC�CIO 1. Elabore a fun��o void insertBefore(Node*, int);
