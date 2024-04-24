@@ -17,6 +17,7 @@ void insertAfter(Node**, int);
 void insertBefore(Node**, int);
 void deleteNote(Node**, Node*);
 void displayList(Node*);
+Node* searchNodebyValue(Node**, int);
 
 int main()
 {
@@ -46,6 +47,16 @@ int main()
     insertBefore(&(head -> ptrNext -> ptrNext), 50);
 
     displayList(head);
+
+    cout << "================================================" << endl;
+
+    Node* ptrEscolhido = searchNodebyValue(&head, 3);
+
+    cout << "O elemento escolhido é: " << ptrEscolhido -> iPayload << endl;
+
+    cout << "================================================" << endl;
+
+    ptrEscolhido = searchNodebyValue(&head, 12);
 
 
     return 0;
@@ -191,6 +202,30 @@ void deleteNote(Node** head, Node* ptrDelete)
 
 
     free(ptrDelete);
+}
+
+Node* searchNodebyValue(Node** head, int iPayLoad){
+
+    if (*head == nullptr)
+    {
+        cout << "searchNodebyValue: Lista vazia" << endl;
+        return nullptr;
+    }
+
+    Node* current = *head;
+
+    while (current != nullptr)
+    {
+        if (current->iPayload == iPayLoad)
+        {
+            return current; // Retorna o ponteiro para o nó com o valor desejado
+        }
+        current = current->ptrNext;
+    }
+
+    cout << "searchNodebyValue: Elemento não encontrado" << endl;
+
+    return nullptr;
 }
 
 //EXERC�CIO 1. Elabore a fun��o void insertBefore(Node*, int);
